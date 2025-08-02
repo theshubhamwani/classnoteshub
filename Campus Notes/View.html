@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>View Notes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>All Notes</h2>
+  <ul id="notesList"></ul>
+
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+  <script src="firebase-config.js"></script>
+  <script>
+    db.collection('notes').orderBy('uploadedAt', 'desc').onSnapshot(snapshot => {
+      const notesList = document.getElementById('notesList');
+      notesList.innerHTML = '';
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const li = document.createElement('li');
+        li.innerHTML = `<b>${data.title}</b> (${data.subject}) — 
+                        <a href="${data.fileURL}" target="_blank">Download</a>`;
+        notesList.appendChild(li);
+      });
+    });
+  </script>
+</body>
+</html>
